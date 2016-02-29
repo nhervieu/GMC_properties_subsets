@@ -7,7 +7,7 @@ import astropy.units as u
 import powerlaw
 
 #load file
-mytable = Table.read('m100.co10.kkms_props_cprops_subsets2.fits')
+mytable = Table.read('m100.co10.kkms_props_cprops_subsets_improved.fits')
 
 ##VARIABLE DEFINITIONS##
 
@@ -34,14 +34,14 @@ sigma0 = mytable['VRMS_EXTRAP_DECONV']/np.sqrt(mytable['RADRMS_EXTRAP_DECONV'])
 M_den = mytable['MASS_EXTRAP']/(np.pi*np.power(mytable['RADRMS_EXTRAP_DECONV'],2)) 
 
 mygalaxy = Galaxy("M100")
-cpropstable = Table.read('m100.co10.kkms_props_cprops_subsets2.fits')
+cpropstable = Table.read('m100.co10.kkms_props_cprops_subsets_improved.fits')
 rgal=mygalaxy.radius(ra = cpropstable['XPOS'], dec = cpropstable['YPOS'])
 
 #indexes for low R_gal group 
 index = np.where(rgal.value < 1100)	
 	
 #centre
-centre_in = np.where(mytable['Centre'] == True)
+centre_in = np.where(mytable['Nuclear'] == True)
 #arms
 arm_in = np.where(mytable['Arms'] == True)
 #print(arm_in)
@@ -54,10 +54,10 @@ outliers = np.where(mytable['Outliers'] == True)
 #Virial mass vs.luminous mass plot
 figure = plt.figure(figsize=(4.5,4)) #figure size in inches
 plt.plot(one,one,linestyle = '-', c = 'k')
-plt.loglog(mytable['MASS_EXTRAP'][centre_in],mytable['VIRMASS_EXTRAP_DECONV'][centre_in],marker='.',c='b',linestyle='None')
-plt.loglog(mytable['MASS_EXTRAP'][arm_in],mytable['VIRMASS_EXTRAP_DECONV'][arm_in],marker='.',c='r',linestyle='None')
-plt.loglog(mytable['MASS_EXTRAP'][interarm_in],mytable['VIRMASS_EXTRAP_DECONV'][interarm_in],marker='.',c='g',linestyle='None')
-plt.loglog(mytable['MASS_EXTRAP'][outliers],mytable['VIRMASS_EXTRAP_DECONV'][outliers],marker='.',c='w',linestyle='None')
+plt.loglog(mytable['MASS_EXTRAP'][centre_in],mytable['VIRMASS_EXTRAP_DECONV'][centre_in],marker='v',c='b',linestyle='None')
+plt.loglog(mytable['MASS_EXTRAP'][arm_in],mytable['VIRMASS_EXTRAP_DECONV'][arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(mytable['MASS_EXTRAP'][interarm_in],mytable['VIRMASS_EXTRAP_DECONV'][interarm_in],marker='o',c='g',linestyle='None')
+plt.loglog(mytable['MASS_EXTRAP'][outliers],mytable['VIRMASS_EXTRAP_DECONV'][outliers],marker='+',c='w',linestyle='None')
 plt.xlabel(r'$M_{\mathrm{lum}}\ (M_{\odot})$') 
 plt.ylabel(r'$M_{\mathrm{vir}}\ (M_{\odot})$')
 plt.tight_layout() 	
@@ -68,20 +68,20 @@ figure = plt.figure(figsize=(4.5,4)) #figure size in inches
 plt.plot(R,sigmav,linestyle = '-', c = 'k')
 plt.ylabel(r'$\sigma\ (km\ s^{-1})$') 
 plt.xlabel(r'$R\ (pc)$')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][centre_in],mytable['VRMS_EXTRAP_DECONV'][centre_in],marker='.',c='b',linestyle='None')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][arm_in],mytable['VRMS_EXTRAP_DECONV'][arm_in],marker='.',c='r',linestyle='None')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],mytable['VRMS_EXTRAP_DECONV'][interarm_in],marker='.',c='g',linestyle='None')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][outliers],mytable['VRMS_EXTRAP_DECONV'][outliers],marker='.',c='m',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][centre_in],mytable['VRMS_EXTRAP_DECONV'][centre_in],marker='v',c='b',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][arm_in],mytable['VRMS_EXTRAP_DECONV'][arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],mytable['VRMS_EXTRAP_DECONV'][interarm_in],marker='o',c='g',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][outliers],mytable['VRMS_EXTRAP_DECONV'][outliers],marker='+',c='m',linestyle='None')
 plt.tight_layout() 	
 plt.savefig('LwRad_matplotlib.png')
 
 #Luminous mass vs. radius plot
 figure = plt.figure(figsize=(4.5,4)) #figure size in inches
 plt.plot(R,M_lum,linestyle = '-', c = 'k')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][centre_in],mytable['MASS_EXTRAP'][centre_in],marker='.',c='b',linestyle='None')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][arm_in],mytable['MASS_EXTRAP'][arm_in],marker='.',c='r',linestyle='None')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],mytable['MASS_EXTRAP'][interarm_in],marker='.',c='g',linestyle='None')
-plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][outliers],mytable['MASS_EXTRAP'][outliers],marker='.',c='m',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][centre_in],mytable['MASS_EXTRAP'][centre_in],marker='v',c='b',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][arm_in],mytable['MASS_EXTRAP'][arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],mytable['MASS_EXTRAP'][interarm_in],marker='o',c='g',linestyle='None')
+plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][outliers],mytable['MASS_EXTRAP'][outliers],marker='+',c='m',linestyle='None')
 plt.xlabel(r'$R\ (pc)$') 
 plt.ylabel(r'$M_{\mathrm{lum}}\ (M_{\odot})$')
 plt.tight_layout() 	
@@ -91,10 +91,10 @@ plt.savefig('MlumRad_matplotlib.png')
 figure = plt.figure(figsize=(4.5,4))
 plt.xlabel('$M/\pi R^2\ ((M_{\odot})/pc^2)$')
 plt.ylabel('$\sigma_0$')
-plt.loglog(M_den[centre_in],sigma0[centre_in],marker='.',c='b',linestyle='None')
-plt.loglog(M_den[arm_in],sigma0[arm_in],marker='.',c='r',linestyle='None')
-plt.loglog(M_den[interarm_in],sigma0[interarm_in],marker='.',c='g',linestyle='None')
-plt.loglog(M_den[outliers],sigma0[outliers],marker='.',c='m',linestyle='None')
+plt.loglog(M_den[centre_in],sigma0[centre_in],marker='v',c='b',linestyle='None')
+plt.loglog(M_den[arm_in],sigma0[arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(M_den[interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
+plt.loglog(M_den[outliers],sigma0[outliers],marker='+',c='m',linestyle='None')
 plt.tight_layout() 	
 plt.savefig('Sigma0_Mden_matplotlib.png')
 
@@ -102,10 +102,10 @@ plt.savefig('Sigma0_Mden_matplotlib.png')
 figure = plt.figure(figsize=(4.5,4))
 plt.xlabel('$R_{gal} (pc)$')
 plt.ylabel('$\sigma_0$')
-plt.loglog(rgal.to(u.pc)[centre_in],sigma0[centre_in],marker='.',c='b',linestyle='None')
-plt.loglog(rgal.to(u.pc)[arm_in],sigma0[arm_in],marker='.',c='r',linestyle='None')
-plt.loglog(rgal.to(u.pc)[interarm_in],sigma0[interarm_in],marker='.',c='g',linestyle='None')
-plt.loglog(rgal.to(u.pc)[outliers],sigma0[outliers],marker='.',c='w',linestyle='None')
+plt.loglog(rgal.to(u.pc)[centre_in],sigma0[centre_in],marker='v',c='b',linestyle='None')
+plt.loglog(rgal.to(u.pc)[arm_in],sigma0[arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(rgal.to(u.pc)[interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
+plt.loglog(rgal.to(u.pc)[outliers],sigma0[outliers],marker='+',c='w',linestyle='None')
 plt.tight_layout() 	
 plt.savefig('sigma0_Rgal_matplotlib.png')
 
@@ -113,10 +113,10 @@ plt.savefig('sigma0_Rgal_matplotlib.png')
 figure = plt.figure(figsize=(4.5,4)) #figure size in inches
 plt.xlabel('X') 
 plt.ylabel('Y')
-plt.plot(mytable['XPOS'][centre_in],mytable['YPOS'][centre_in],marker='.',c='b',linestyle='None')
-plt.plot(mytable['XPOS'][arm_in],mytable['YPOS'][arm_in],marker='.',c='r',linestyle='None')
-plt.plot(mytable['XPOS'][interarm_in],mytable['YPOS'][interarm_in],marker='.',c='g',linestyle='None')
-plt.plot(mytable['XPOS'][outliers],mytable['YPOS'][outliers],marker='.',c='w',linestyle='None')
+plt.plot(mytable['XPOS'][centre_in],mytable['YPOS'][centre_in],marker='v',c='b',linestyle='None')
+plt.plot(mytable['XPOS'][arm_in],mytable['YPOS'][arm_in],marker='s',c='r',linestyle='None')
+plt.plot(mytable['XPOS'][interarm_in],mytable['YPOS'][interarm_in],marker='o',c='g',linestyle='None')
+plt.plot(mytable['XPOS'][outliers],mytable['YPOS'][outliers],marker='+',c='w',linestyle='None')
 plt.tight_layout() 	
 plt.savefig('xypos_matplotlib.png')
 
@@ -220,12 +220,3 @@ plt.savefig('powerlaw_interarm.png')
 #print out table of alpha, R and p values for each mass distribution
 tb = {'Clouds': ['All','Nuclear','Disk','Arm','Interarm'],'Alpha': [myfit.alpha,myfit_nuc.alpha,myfit_disk.alpha,myfit_arm.alpha,myfit_interarm.alpha],'R':[R,R_nuc,R_disk,R_arm,R_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'x_max':[myfit.xmax,myfit_nuc.xmax,myfit_disk.xmax,myfit_arm.xmax,myfit_interarm.xmax]}
 print Table(tb,names =('Clouds','Alpha','R','p','x_max'))
-
-
-
-
-
-
-
-
-	

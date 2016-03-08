@@ -44,7 +44,7 @@ interarm_in = np.where(mytable['Interarm'] == True)
 outliers = np.where(mytable['Outliers'] == True)
 
 #Calculate new depletion time
-Tdep2 = M_den / SFRSD
+Tdep2 = M_den *1E6 / SFRSD
 
 ##PLOTS##
 #Depletion time vs Surface Density
@@ -52,8 +52,10 @@ figure = plt.figure(figsize=(4.5,4))
 plt.xlabel('$\Sigma\ ((M_{\odot})/pc^2)$')
 plt.ylabel('$Depletion\ Time (yrs)$')
 plt.loglog(M_den[centre_in],Tdep[centre_in],marker='v',c='b',linestyle='None')
-plt.loglog(M_den[arm_in],Tdep[arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(M_den[arm_in],Tdep[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(M_den[interarm_in],Tdep[interarm_in],marker='o',c='g',linestyle='None')
+plt.ylim(1E9, 1.5E10)
+plt.xlim(10,1E4)
 plt.tight_layout() 	
 plt.savefig('Tdep_Mden_matplotlib.png')
 
@@ -62,8 +64,10 @@ figure = plt.figure(figsize=(4.5,4))
 plt.ylabel('$Depletion\ Time (yrs)$')
 plt.xlabel('$\sigma_0$')
 plt.loglog(sigma0[centre_in],Tdep[centre_in],marker='v',c='b',linestyle='None')
-plt.loglog(sigma0[arm_in],Tdep[arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(sigma0[arm_in],Tdep[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(sigma0[interarm_in],Tdep[interarm_in],marker='o',c='g',linestyle='None')
+plt.ylim(1E9, 1.5E10)
+plt.xlim(5E-2,4)
 plt.tight_layout() 	
 plt.savefig('Tdep_sigma0_matplotlib.png')
 
@@ -72,8 +76,10 @@ figure = plt.figure(figsize=(4.5,4))
 plt.xlabel('$\Sigma\ ((M_{\odot})/pc^2)$')
 plt.ylabel('$Depletion\ Time (actual) (yrs)$')
 plt.loglog(M_den[centre_in],Tdep2[centre_in],marker='v',c='b',linestyle='None')
-plt.loglog(M_den[arm_in],Tdep2[arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(M_den[arm_in],Tdep2[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(M_den[interarm_in],Tdep2[interarm_in],marker='o',c='g',linestyle='None')
+plt.ylim(4E8, 1E12)
+plt.xlim(10,1E4)
 plt.tight_layout() 	
 plt.savefig('Tdep2_Mden_matplotlib.png')
 
@@ -82,8 +88,10 @@ figure = plt.figure(figsize=(4.5,4))
 plt.ylabel('$Depletion\ Time (actual) (yrs)$')
 plt.xlabel('$\sigma_0$')
 plt.loglog(sigma0[centre_in],Tdep2[centre_in],marker='v',c='b',linestyle='None')
-plt.loglog(sigma0[arm_in],Tdep2[arm_in],marker='s',c='r',linestyle='None')
+plt.loglog(sigma0[arm_in],Tdep2[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(sigma0[interarm_in],Tdep2[interarm_in],marker='o',c='g',linestyle='None')
+plt.ylim(4E8, 1E12)
+plt.xlim(5E-2,4)
 plt.tight_layout() 	
 plt.savefig('Tdep2_sigma0_matplotlib.png')
 

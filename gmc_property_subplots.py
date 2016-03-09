@@ -60,7 +60,6 @@ plt.loglog(mytable['MASS_EXTRAP'][arm_in],mytable['VIRMASS_EXTRAP_DECONV'][arm_i
 plt.loglog(mytable['MASS_EXTRAP'][interarm_in],mytable['VIRMASS_EXTRAP_DECONV'][interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(mytable['MASS_EXTRAP'][outliers],mytable['VIRMASS_EXTRAP_DECONV'][outliers],marker='+',c='w',linestyle='None')
 plt.loglog(mytable['MASS_EXTRAP'][centre_in],mytable['VIRMASS_EXTRAP_DECONV'][centre_in],marker='v',c='b',linestyle='None')
-
 plt.xlabel(r'$M_{\mathrm{lum}}\ (M_{\odot})$') 
 plt.ylabel(r'$M_{\mathrm{vir}}\ (M_{\odot})$')
 plt.ylim(4E5, 3E9)
@@ -72,8 +71,8 @@ plt.savefig('MlumMvir_matplotlib.png')
 #Radius vs. line width(velocity dispersion) plot
 figure = plt.figure(figsize=(4.5,4)) #figure size in inches
 plt.plot(R,sigmav,linestyle = '-', c = 'k')
-plt.ylabel(r'$\sigma\ (km\ s^{-1})$') 
-plt.xlabel(r'$R\ (pc)$')
+plt.ylabel(r'$\sigma\ (\mathrm{km\ s^{-1}})$') 
+plt.xlabel(r'$R\ (\mathrm{pc})$')
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][arm_in],mytable['VRMS_EXTRAP_DECONV'][arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],mytable['VRMS_EXTRAP_DECONV'][interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][centre_in],mytable['VRMS_EXTRAP_DECONV'][centre_in],marker='v',c='b',linestyle='None')
@@ -90,7 +89,7 @@ plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][arm_in],mytable['MASS_EXTRAP'][arm_in
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],mytable['MASS_EXTRAP'][interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][centre_in],mytable['MASS_EXTRAP'][centre_in],marker='v',c='b',linestyle='None')
 #plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][outliers],mytable['MASS_EXTRAP'][outliers],marker='+',c='m',linestyle='None')
-plt.xlabel(r'$R\ (pc)$') 
+plt.xlabel(r'$R\ (\mathrm{pc})$') 
 plt.ylabel(r'$M_{\mathrm{lum}}\ (M_{\odot})$')
 plt.ylim(1E6, 1E9)
 plt.xlim(40,1E3)
@@ -99,8 +98,8 @@ plt.savefig('MlumRad_matplotlib.png')
 
 #Sigma_0 vs Mass Density
 figure = plt.figure(figsize=(4.5,4))
-plt.xlabel('$M/\pi R^2\ ((M_{\odot})/pc^2)$')
-plt.ylabel('$\sigma_0$')
+plt.xlabel('$\Sigma\ ((M_{\odot})/\mathrm{pc}^2)$')
+plt.ylabel('$\sigma_0\ ({\mathrm{km\ s^{-1}}})$')
 plt.loglog(M_den[arm_in],sigma0[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(M_den[interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(M_den[centre_in],sigma0[centre_in],marker='v',c='b',linestyle='None')
@@ -112,8 +111,8 @@ plt.savefig('Sigma0_Mden_matplotlib.png')
 
 #Sigma_0 vs Galactocentric Radii
 figure = plt.figure(figsize=(4.5,4))
-plt.xlabel('$R_{gal} (pc)$')
-plt.ylabel('$\sigma_0$')
+plt.xlabel('$R_{\mathrm{gal}} (\mathrm{pc})$')
+plt.ylabel('$\sigma_0\ (\mathrm{km\ s^{-1}})$')
 plt.loglog(rgal.to(u.pc)[arm_in],sigma0[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(rgal.to(u.pc)[interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(rgal.to(u.pc)[outliers],sigma0[outliers],marker='+',c='w',linestyle='None')
@@ -126,14 +125,14 @@ plt.savefig('sigma0_Rgal_matplotlib.png')
 
 #X,Y position
 figure = plt.figure(figsize=(4.5,4)) #figure size in inches
-plt.xlabel('X position (kpc)') 
-plt.ylabel('Y position (kpc)')
+plt.xlabel('X position $(\mathrm{kpc})$') 
+plt.ylabel('Y position $(\mathrm{kpc})$')
 plt.plot(x.to(u.kpc)[centre_in],y.to(u.kpc)[centre_in],marker='v',c='b',linestyle='None')
 plt.plot(x.to(u.kpc)[arm_in],y.to(u.kpc)[arm_in],marker='d',c='m',linestyle='None')
 plt.plot(x.to(u.kpc)[interarm_in],y.to(u.kpc)[interarm_in],marker='o',c='g',linestyle='None')
 plt.plot(x.to(u.kpc)[outliers],y.to(u.kpc)[outliers],marker='+',c='w',linestyle='None')
-plt.tight_layout() 	
-plt.axes().set_aspect('equal', 'datalim')
+plt.ylim(-10,12)
+plt.tight_layout() 
 plt.savefig('xypos_matplotlib.png')
 
 
@@ -242,7 +241,7 @@ plt.savefig('powerlaw_arm_interarm.png')
 
 
 #print out table of alpha, R and p values for each mass distribution
-tb = {'Clouds': ['All','Nuclear','Disk','Arm','Interarm'],'alpha': [myfit.alpha,myfit_nuc.alpha,myfit_disk.alpha,myfit_arm.alpha,myfit_interarm.alpha],'$\alpha$ (Truncated)': [myfit.truncated_power_law.alpha,myfit_nuc.truncated_power_law.alpha,myfit_disk.truncated_power_law.alpha,myfit_arm.truncated_power_law.alpha,myfit_interarm.truncated_power_law.alpha],'R':[R,R_nuc,R_disk,R_arm,R_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'Cutoff Mass':[1/myfit.truncated_power_law.parameter2,1/myfit_nuc.truncated_power_law.parameter2,1/myfit_disk.truncated_power_law.parameter2,1/myfit_arm.truncated_power_law.parameter2,1/myfit_interarm.truncated_power_law.parameter2]}
+tb = {'Clouds': ['All','Nuclear','Disk','Arm','Interarm'],'alpha': [myfit.alpha,myfit_nuc.alpha,myfit_disk.alpha,myfit_arm.alpha,myfit_interarm.alpha],'alpha (Truncated)': [myfit.truncated_power_law.alpha,myfit_nuc.truncated_power_law.alpha,myfit_disk.truncated_power_law.alpha,myfit_arm.truncated_power_law.alpha,myfit_interarm.truncated_power_law.alpha],'R':[R,R_nuc,R_disk,R_arm,R_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'p':[p,p_nuc,p_disk,p_arm,p_interarm], 'Cutoff Mass':[1/myfit.truncated_power_law.parameter2,1/myfit_nuc.truncated_power_law.parameter2,1/myfit_disk.truncated_power_law.parameter2,1/myfit_arm.truncated_power_law.parameter2,1/myfit_interarm.truncated_power_law.parameter2]}
 t = Table(tb,names =('Clouds','alpha','alpha (Truncated)','R','p','Cutoff Mass'))
 print t
 

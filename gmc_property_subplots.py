@@ -36,9 +36,9 @@ M_den = mytable['MASS_EXTRAP']/(np.pi*np.power(mytable['RADRMS_EXTRAP_DECONV'],2
 #Surface density derived from radarea instead of radrms
 high_Mden = np.where(M_den > 1000)
 den_check = mytable['MASS_EXTRAP']/(np.pi*np.power(mytable['RADAREA_DECONV'],2))
-## Marks the arm cloud that moves to a higher density
-test = [40,44,94,104]
+test = [40,44,94,104] # Marks the arm cloud that moves to a higher density
 
+#galactocentric radii
 mygalaxy = Galaxy("M100")
 cpropstable = Table.read('m100.co10.kkms_props_cprops_subsets_improved.fits')
 x, y = mygalaxy.radius(ra = mytable['XPOS'], dec = mytable['YPOS'], returnXY = True)
@@ -57,7 +57,6 @@ area_interarm = 106.465208911
 area_nuc = 4.20965755925
 
 
-
 ##PLOTS##
 
 #Virial mass vs.luminous mass plot
@@ -65,7 +64,6 @@ figure = plt.figure(figsize=(4.5,4)) #figure size in inches
 plt.loglog(one,one,linestyle = '-', c = 'k')
 plt.loglog(mytable['MASS_EXTRAP'][arm_in],mytable['VIRMASS_EXTRAP_DECONV'][arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(mytable['MASS_EXTRAP'][interarm_in],mytable['VIRMASS_EXTRAP_DECONV'][interarm_in],marker='o',c='g',linestyle='None')
-plt.loglog(mytable['MASS_EXTRAP'][outliers],mytable['VIRMASS_EXTRAP_DECONV'][outliers],marker='+',c='w',linestyle='None')
 plt.loglog(mytable['MASS_EXTRAP'][centre_in],mytable['VIRMASS_EXTRAP_DECONV'][centre_in],marker='v',c='b',linestyle='None')
 plt.xlabel(r'$M_{\mathrm{lum}}\ (M_{\odot})$') 
 plt.ylabel(r'$M_{\mathrm{vir}}\ (M_{\odot})$')
@@ -94,7 +92,6 @@ plt.plot(R,M_lum,linestyle = '-', c = 'k')
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][arm_in],mytable['MASS_EXTRAP'][arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],mytable['MASS_EXTRAP'][interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][centre_in],mytable['MASS_EXTRAP'][centre_in],marker='v',c='b',linestyle='None')
-#plt.loglog(mytable['RADRMS_EXTRAP_DECONV'][outliers],mytable['MASS_EXTRAP'][outliers],marker='+',c='m',linestyle='None')
 plt.xlabel(r'$R\ (\mathrm{pc})$') 
 plt.ylabel(r'$M_{\mathrm{lum}}\ (M_{\odot})$')
 plt.ylim(1E6, 1E9)
@@ -104,19 +101,12 @@ plt.savefig('MlumRad_matplotlib.png')
 
 #Sigma_0 vs Mass Density
 figure = plt.figure(figsize=(4.5,4))
-#plt.xlabel('$\Sigma_{rms}\ (M_{\odot}\ \mathrm{pc}^{-2})$')
 plt.xlabel('$\Sigma\ (M_{\odot}\ \mathrm{pc}^{-2})$')
-
 plt.ylabel('$\sigma_0\ ({\mathrm{km\ s^{-1}}})$')
-#plt.loglog(M_den[high_Mden],sigma0[high_Mden],marker='s',c='0.9',linestyle='None',ms = 10)
-#plt.loglog(M_den[test],sigma0[test],marker='s',c='0.5',linestyle='None',ms = 8)
-
 arm_nohighden=np.where(np.logical_and(mytable['Arms'] == True, M_den < 1E3))
-
 plt.loglog(M_den[arm_nohighden],sigma0[arm_nohighden],marker='d',c='m',linestyle='None')
 plt.loglog(M_den[interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(M_den[centre_in],sigma0[centre_in],marker='v',c='b',linestyle='None')
-#plt.loglog(M_den[outliers],sigma0[outliers],marker='+',c='m',linestyle='None')
 plt.ylim(3E-2, 6)
 plt.xlim(1E1,3E3)
 plt.tight_layout() 	
@@ -126,8 +116,6 @@ plt.savefig('Sigma0_Mden_matplotlib.png')
 figure = plt.figure(figsize=(4.5,4))
 plt.xlabel('$\Sigma_{area}\ (M_{\odot}\ \mathrm{pc}^{-2})$')
 plt.ylabel('$\sigma_0\ ({\mathrm{km\ s^{-1}}})$')
-#plt.loglog(den_check[high_Mden],sigma0[high_Mden],marker='s',c='0.9',linestyle='None',ms = 10)
-#plt.loglog(den_check[test],sigma0[test],marker='s',c='0.5',linestyle='None',ms = 8)
 plt.loglog(den_check[arm_in],sigma0[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(den_check[interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(den_check[centre_in],sigma0[centre_in],marker='v',c='b',linestyle='None')
@@ -144,7 +132,6 @@ plt.xlabel('$R_{\mathrm{gal}} (\mathrm{pc})$')
 plt.ylabel('$\sigma_0\ (\mathrm{km\ s^{-1}})$')
 plt.loglog(rgal.to(u.pc)[arm_in],sigma0[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(rgal.to(u.pc)[interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
-plt.loglog(rgal.to(u.pc)[outliers],sigma0[outliers],marker='+',c='w',linestyle='None')
 plt.loglog(rgal.to(u.pc)[centre_in],sigma0[centre_in],marker='v',c='b',linestyle='None')
 plt.ylim(0.05, 5)
 plt.xlim(1E2,5E4)
@@ -170,7 +157,6 @@ plt.xlabel(r'$\nabla v\ (\mathrm{km\ s}^{-1}\ \mathrm{pc}^{-1})$')
 plt.ylabel(r'$M_{\mathrm{lum}}\ (M_{\odot})$')
 plt.loglog(mytable['VELGRAD'][arm_in],mytable['MASS_EXTRAP'][arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(mytable['VELGRAD'][interarm_in],mytable['MASS_EXTRAP'][interarm_in],marker='o',c='g',linestyle='None')
-#plt.loglog(mytable['VELGRAD'][outliers],mytable['MASS_EXTRAP'][outliers],marker='+',c='w',linestyle='None')
 plt.loglog(mytable['VELGRAD'][centre_in],mytable['MASS_EXTRAP'][centre_in],marker='v',c='b',linestyle='None')
 plt.ylim(5E5, 1E9)
 plt.xlim(0.0005,0.5)
@@ -186,7 +172,6 @@ plt.loglog(mytable['VELGRAD'][arm_in],mytable['MASS_EXTRAP'][arm_in],marker='d',
 plt.loglog(mytable['VELGRAD'][interarm_in],mytable['MASS_EXTRAP'][interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(mytable['VELGRAD'][outliers],mytable['MASS_EXTRAP'][outliers],marker='+',c='w',linestyle='None')
 plt.loglog(mytable['VELGRAD'][centre_in],mytable['MASS_EXTRAP'][centre_in],marker='v',c='b',linestyle='None')
-#plt.axes().set_aspect('equal', 'datalim')
 plt.tight_layout() 	
 plt.savefig('Mlum_vgrad_matplotlib_zoomout.png')
 
@@ -198,11 +183,22 @@ plt.loglog(mytable['VELGRAD'][arm_in],mytable['VIRMASS_EXTRAP_DECONV'][arm_in],m
 plt.loglog(mytable['VELGRAD'][interarm_in],mytable['VIRMASS_EXTRAP_DECONV'][interarm_in],marker='o',c='g',linestyle='None')
 plt.loglog(mytable['VELGRAD'][outliers],mytable['VIRMASS_EXTRAP_DECONV'][outliers],marker='+',c='w',linestyle='None')
 plt.loglog(mytable['VELGRAD'][centre_in],mytable['VIRMASS_EXTRAP_DECONV'][centre_in],marker='v',c='b',linestyle='None')
-#plt.axes().set_aspect('equal', 'datalim')
 plt.tight_layout() 	
 plt.savefig('Mvir_vgrad_matplotlib.png')
 
-
+#Sigma_0 vs velocity gradient
+figure = plt.figure(figsize=(4.5,4))
+plt.xlabel(r'$\nabla v\ (\mathrm{km\ s}^{-1}\ \mathrm{pc}^{-1})$')
+plt.ylabel('$\sigma_0\ (\mathrm{km\ s^{-1}})$')
+plt.loglog(mytable['VELGRAD'][arm_in],sigma0[arm_in],marker='d',c='m',linestyle='None')
+plt.loglog(mytable['VELGRAD'][interarm_in],sigma0[interarm_in],marker='o',c='g',linestyle='None')
+plt.loglog(mytable['VELGRAD'][outliers],sigma0[outliers],marker='+',c='w',linestyle='None')
+plt.loglog(mytable['VELGRAD'][centre_in],sigma0[centre_in],marker='v',c='b',linestyle='None')
+plt.axes().set_aspect('equal', 'datalim')
+plt.tight_layout() 	
+plt.ylim(0.08, 1.8)
+plt.xlim(0.0005,0.1)
+plt.savefig('sigma0_vgrad_matplotlib.png')
 
 
 ## MASS DISTRIBUTIONS ##
@@ -275,7 +271,6 @@ plt.savefig('powerlaw_arm.png')
 figure = plt.figure(figsize=(4.5,4)) 
 test = np.hstack([index,arm_in])
 mass_interarm = np.delete(mass,test)
-#mass_interarm = np.delete(mass_interarm,index)
 #Fit Data
 myfit_interarm = powerlaw.Fit(mass_interarm,xmin = 1E7)
 R_interarm, p_interarm = myfit_interarm.distribution_compare('power_law','truncated_power_law')
@@ -297,7 +292,6 @@ myfit_arm.plot_ccdf(drawstyle='steps',label='Data (Arm)')
 myfit_interarm.truncated_power_law.plot_ccdf(label='Trunc. Power Law (Inter-arm)')
 myfit_interarm.power_law.plot_ccdf(label='Power Law (Inter-arm)')
 myfit_interarm.plot_ccdf(drawstyle='steps',label='Data (Inter-arm)')
-
 plt.legend(loc ='lower left',prop={'size':7})
 plt.ylabel(r'$N$')
 plt.xlabel(r'$Mass\ (M_{\odot})$')
@@ -321,57 +315,29 @@ t.write('table.tex', format = 'latex')
 
 ##nuclear
 mass_nuc = mass[centre_in]
-figure = plt.figure(figsize=(4.5,4)) 
-#plt.plot(sorted(mass_nuc),np.linspace(1,len(mass_nuc)/area_nuc,len(mass_nuc)),drawstyle='steps')
-plt.plot(sorted(mass_nuc),np.linspace(1,1.0/len(mass_nuc)/area_nuc,len(mass_nuc)),drawstyle='steps')
-plt.ylabel(r'$N$')
-plt.xlabel(r'$Mass\ (M_{\odot})$')
-plt.tight_layout() 	
-plt.savefig('massdist_nuc_norm.png')
 
 ##arm
 mass_arm = mass[arm_in]
-figure = plt.figure(figsize=(4.5,4)) 
-plt.plot(sorted(mass_arm),np.linspace(1,1.0/len(mass_arm)/area_arm,len(mass_arm)),
-	drawstyle='steps')
-plt.ylabel(r'$N$')
-plt.xlabel(r'$Mass\ (M_{\odot})$')
-plt.tight_layout() 	
-plt.savefig('massdist_arm_norm.png')
 
 ##inter arm
-
 test = np.hstack([index,arm_in])
 mass_interarm = np.delete(mass,test)
-figure = plt.figure(figsize=(4.5,4)) 
-plt.plot(sorted(mass_interarm),np.linspace(1,1.0/len(mass_interarm)/area_interarm,
-	len(mass_interarm)),drawstyle='steps')
-plt.ylabel(r'$N$')
-plt.xlabel(r'$Mass\ (M_{\odot})$')
-plt.tight_layout() 	
-plt.savefig('massdist_interarm_norm.png')
 
-## arm+inter-arm combined
+#plot all three mass distributions
 figure = plt.figure(figsize=(4.5,4)) 
-line_nuc = plt.plot(sorted(mass_nuc),np.linspace(1,1.0/len(mass_nuc)/area_nuc,len(mass_nuc)),drawstyle='steps',label='Nuclear',c='b')
-line_arm = plt.plot(sorted(mass_interarm),np.linspace(1,1.0/len(mass_interarm)/area_interarm,len(mass_interarm)),drawstyle='steps',label='Inter-Arm',c='g')
-line_inter = plt.plot(sorted(mass_arm),np.linspace(1,1.0/len(mass_arm)/area_arm,len(mass_arm)),drawstyle='steps',label='Arm',c='m')
-
-#plt.plot(sorted(mass_arm),np.linspace(1,1.0/len(mass_arm)/area_arm,len(mass_arm)),
-#	sorted(mass_interarm),np.linspace(1,1.0/len(mass_interarm)/area_interarm,
-#		len(mass_interarm)),sorted(mass_nuc),np.linspace(1,1.0/len(mass_nuc)/area_nuc,len(mass_nuc)),drawstyle='steps')
-plt.ylabel(r'$N$')
+line_nuc = plt.loglog(sorted(mass_nuc),np.linspace(len(mass_nuc),1.0,len(mass_nuc))/area_nuc,drawstyle='steps',label='Nuclear',c='b')
+line_arm = plt.loglog(sorted(mass_arm),np.linspace(len(mass_arm),1.0,len(mass_arm))/area_arm,drawstyle='steps',label='Arm',c='m')
+line_interarm = plt.loglog(sorted(mass_interarm),np.linspace(len(mass_interarm),1.0,len(mass_interarm))/area_interarm,drawstyle='steps',label='Inter-Arm',c='g')
+plt.ylabel(r'$N_\mathrm{norm}\ (\mathrm{kpc^{-2}})$')
 plt.xlabel(r'$Mass\ (M_{\odot})$')
+plt.legend(loc ='lower left',prop={'size':9})
 plt.tight_layout() 	
-plt.legend(loc ='upper right',prop={'size':9})
-#plt.legend(handler_map={line
+plt.ylim(5E-3, 8)
+plt.xlim(8E5,1E9)
 plt.savefig('massdist_all_norm.png')
 
 
-
 #### MEANS
-
-##mass
 
 v_arm_in = np.where(np.logical_and(mytable['Arms'] == True, mytable['VELGRAD'] > 1E-4))
 v_interarm_in = np.where(np.logical_and(mytable['Interarm'] == True,mytable['VELGRAD'] > 1E-4))
@@ -379,61 +345,39 @@ v_all = np.where(mytable['VELGRAD'] > 1E-4)
 
 tb2 = {'Clouds': ['All','Nuclear','Arm','Interarm'] 
 	,'mean_mass': [
-		'{:3.2e}'.format(np.mean(mytable['MASS_EXTRAP'])),
-		'{:3.2e}'.format(np.mean(mytable['MASS_EXTRAP'][centre_in])),
-		'{:3.2e}'.format(np.mean(mytable['MASS_EXTRAP'][arm_in])),
-		'{:3.2e}'.format(np.mean(mytable['MASS_EXTRAP'][interarm_in]))]
+		'{:3.2f}'.format(np.mean(np.log10(mytable['MASS_EXTRAP']))),
+		'{:3.2f}'.format(np.mean(np.log10(mytable['MASS_EXTRAP'][centre_in]))),
+		'{:3.2f}'.format(np.mean(np.log10(mytable['MASS_EXTRAP'][arm_in]))),
+		'{:3.2f}'.format(np.mean(np.log10(mytable['MASS_EXTRAP'][interarm_in])))]
 	,'stde_mass': [
-		'{:3.2e}'.format(np.std(mytable['MASS_EXTRAP'],ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP']))),
-		'{:3.2e}'.format(np.std(mytable['MASS_EXTRAP'][centre_in],ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP'][centre_in]))),
-		'{:3.2e}'.format(np.std(mytable['MASS_EXTRAP'][arm_in],ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP'][arm_in]))),
-		'{:3.2e}'.format(np.std(mytable['MASS_EXTRAP'][interarm_in],ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP'][interarm_in])))]
-	,'mean_vgrad': [
-		'{:4.3f}'.format(np.mean(mytable['VELGRAD'][v_all])),
-		'{:4.3f}'.format(np.mean(mytable['VELGRAD'][centre_in])),
-		'{:4.3f}'.format(np.mean(mytable['VELGRAD'][v_arm_in])),
-		'{:4.3f}'.format(np.mean(mytable['VELGRAD'][v_interarm_in]))]
-	,'stde_vgrad': [
-		'{:4.3f}'.format(np.std(mytable['VELGRAD'][v_all],ddof=1)/np.sqrt(len(mytable['VELGRAD'][v_all]))),
-		'{:4.3f}'.format(np.std(mytable['VELGRAD'][centre_in],ddof=1)/np.sqrt(len(mytable['VELGRAD'][centre_in]))),
-		'{:4.3f}'.format(np.std(mytable['VELGRAD'][v_arm_in],ddof=1)/np.sqrt(len(mytable['VELGRAD'][v_arm_in]))),
-		'{:4.3f}'.format(np.std(mytable['VELGRAD'][v_interarm_in],ddof=1)/np.sqrt(len(mytable['VELGRAD'][v_interarm_in])))]
+		'{:3.2f}'.format(np.std(np.log10(mytable['MASS_EXTRAP']),ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP']))),
+		'{:3.2f}'.format(np.std(np.log10(mytable['MASS_EXTRAP'][centre_in]),ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP'][centre_in]))),
+		'{:3.2f}'.format(np.std(np.log10(mytable['MASS_EXTRAP'][arm_in]),ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP'][arm_in]))),
+		'{:3.2f}'.format(np.std(np.log10(mytable['MASS_EXTRAP'][interarm_in]),ddof=1)/np.sqrt(len(mytable['MASS_EXTRAP'][interarm_in])))]
 	,'mean_sigma0': [
-		'{:4.3f}'.format(np.nanmean(sigma0)),
-		'{:4.3f}'.format(np.nanmean(sigma0[centre_in])),
-		'{:4.3f}'.format(np.nanmean(sigma0[arm_in])),
-		'{:4.3f}'.format(np.nanmean(sigma0[interarm_in]))]
+		'{:3.2f}'.format(np.nanmean(np.log10(sigma0))),
+		'{:3.2f}'.format(np.nanmean(np.log10(sigma0[centre_in]))),
+		'{:3.2f}'.format(np.nanmean(np.log10(sigma0[arm_in]))),
+		'{:3.2f}'.format(np.nanmean(np.log10(sigma0[interarm_in])))]
 	,'stde_sigma0': [
-		'{:4.3f}'.format(np.nanstd(sigma0,ddof=1)/np.sqrt(len(sigma0))),
-		'{:4.3f}'.format(np.nanstd(sigma0[centre_in],ddof=1)/np.sqrt(len(sigma0[centre_in]))),
-		'{:4.3f}'.format(np.nanstd(sigma0[arm_in],ddof=1)/np.sqrt(len(sigma0[arm_in]))),
-		'{:4.3f}'.format(np.nanstd(sigma0[interarm_in],ddof=1)/np.sqrt(len(sigma0[interarm_in])))]
+		'{:3.2f}'.format(np.nanstd(np.log10(sigma0),ddof=1)/np.sqrt(len(sigma0))),
+		'{:3.2f}'.format(np.nanstd(np.log10(sigma0[centre_in]),ddof=1)/np.sqrt(len(sigma0[centre_in]))),
+		'{:3.2f}'.format(np.nanstd(np.log10(sigma0[arm_in]),ddof=1)/np.sqrt(len(sigma0[arm_in]))),
+		'{:3.2f}'.format(np.nanstd(np.log10(sigma0[interarm_in]),ddof=1)/np.sqrt(len(sigma0[interarm_in])))]
+	,'mean_vgrad': [
+		'{:3.2f}'.format(np.mean(np.log10(mytable['VELGRAD'][v_all]))),
+		'{:3.2f}'.format(np.mean(np.log10(mytable['VELGRAD'][centre_in]))),
+		'{:3.2f}'.format(np.mean(np.log10(mytable['VELGRAD'][v_arm_in]))),
+		'{:3.2f}'.format(np.mean(np.log10(mytable['VELGRAD'][v_interarm_in])))]
+	,'stde_vgrad': [
+		'{:3.2f}'.format(np.std(np.log10(mytable['VELGRAD'][v_all]),ddof=1)/np.sqrt(len(mytable['VELGRAD'][v_all]))),
+		'{:3.2f}'.format(np.std(np.log10(mytable['VELGRAD'][centre_in]),ddof=1)/np.sqrt(len(mytable['VELGRAD'][centre_in]))),
+		'{:3.2f}'.format(np.std(np.log10(mytable['VELGRAD'][v_arm_in]),ddof=1)/np.sqrt(len(mytable['VELGRAD'][v_arm_in]))),
+		'{:3.2f}'.format(np.std(np.log10(mytable['VELGRAD'][v_interarm_in]),ddof=1)/np.sqrt(len(mytable['VELGRAD'][v_interarm_in])))]
 	}
 	
-t2 = Table(tb2,names =('Clouds','mean_mass','stde_mass','mean_vgrad','stde_vgrad','mean_sigma0','stde_sigma0'))
+t2 = Table(tb2,names =('Clouds','mean_mass','stde_mass','mean_sigma0','stde_sigma0','mean_vgrad','stde_vgrad'))
 print t2
 
+
 t2.write('means.tex', format = 'latex')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

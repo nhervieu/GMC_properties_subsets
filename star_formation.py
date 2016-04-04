@@ -50,7 +50,7 @@ Tdep2 = M_den *1E6 / SFRSD
 #Depletion time vs Surface Density
 figure = plt.figure(figsize=(4.5,4))
 plt.xlabel('$\Sigma\ (M_{\odot}\ \mathrm{pc}^{-2})$')
-plt.ylabel('$T_\mathrm{dep} (\mathrm{yrs})$')
+plt.ylabel(r'$\tau _\mathrm{H2}\ (\mathrm{yrs})$')
 plt.loglog(M_den[centre_in],Tdep[centre_in],marker='v',c='b',linestyle='None')
 plt.loglog(M_den[arm_in],Tdep[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(M_den[interarm_in],Tdep[interarm_in],marker='o',c='g',linestyle='None')
@@ -61,7 +61,7 @@ plt.savefig('Tdep_Mden_matplotlib.png')
 
 #Depletion time vs Sigma_0
 figure = plt.figure(figsize=(4.5,4))
-plt.ylabel('$T_\mathrm{dep} (\mathrm{yrs})$')
+plt.ylabel(r'$\tau _\mathrm{H2}\ (\mathrm{yrs})$')
 plt.xlabel('$\sigma_0\ (\mathrm{km\ s^{-1}})$')
 plt.loglog(sigma0[centre_in],Tdep[centre_in],marker='v',c='b',linestyle='None')
 plt.loglog(sigma0[arm_in],Tdep[arm_in],marker='d',c='m',linestyle='None')
@@ -74,7 +74,7 @@ plt.savefig('Tdep_sigma0_matplotlib.png')
 #Depletion time vs Surface Density
 figure = plt.figure(figsize=(4.5,4))
 plt.xlabel('$\Sigma\ (M_{\odot}\ \mathrm{pc}^{-2})$')
-plt.ylabel('$T_\mathrm{dep} (actual) (\mathrm{yrs})$')
+plt.ylabel(r'$\tau _\mathrm{GMA}\ (\mathrm{yrs})$')
 plt.loglog(M_den[centre_in],Tdep2[centre_in],marker='v',c='b',linestyle='None')
 plt.loglog(M_den[arm_in],Tdep2[arm_in],marker='d',c='m',linestyle='None')
 plt.loglog(M_den[interarm_in],Tdep2[interarm_in],marker='o',c='g',linestyle='None')
@@ -85,7 +85,7 @@ plt.savefig('Tdep2_Mden_matplotlib.png')
 
 #Depletion time vs Sigma_0
 figure = plt.figure(figsize=(4.5,4))
-plt.ylabel('$T_\mathrm{dep} (actual) (\mathrm{yrs})$')
+plt.ylabel(r'$\tau _\mathrm{GMA}\ (\mathrm{yrs})$')
 plt.xlabel('$\sigma_0\ (\mathrm{km\ s^{-1}})$')
 plt.loglog(sigma0[centre_in],Tdep2[centre_in],marker='v',c='b',linestyle='None')
 plt.loglog(sigma0[arm_in],Tdep2[arm_in],marker='d',c='m',linestyle='None')
@@ -95,53 +95,44 @@ plt.xlim(5E-2,4)
 plt.tight_layout() 	
 plt.savefig('Tdep2_sigma0_matplotlib.png')
 
+##SFE
+figure = plt.figure(figsize=(4.5,4))
+plt.plot(np.log10(np.power(mytable['VRMS_EXTRAP_DECONV'][centre_in],-0.32)*(np.power(mytable['MASS_EXTRAP'][centre_in]/np.power(mytable['RADRMS_EXTRAP_DECONV'][centre_in],3),0.5))),np.log10(1/Tdep[centre_in]),marker='v',c='b',linestyle='None')
+plt.plot(np.log10(np.power(mytable['VRMS_EXTRAP_DECONV'][arm_in],-0.32)*(np.power(mytable['MASS_EXTRAP'][arm_in]/np.power(mytable['RADRMS_EXTRAP_DECONV'][arm_in],3),0.5))),np.log10(1/Tdep[arm_in]),marker='d',c='m',linestyle='None')
+plt.plot(np.log10(np.power(mytable['VRMS_EXTRAP_DECONV'][interarm_in],-0.32)*(np.power(mytable['MASS_EXTRAP'][interarm_in]/np.power(mytable['RADRMS_EXTRAP_DECONV'][interarm_in],3),0.5))),np.log10(1/Tdep[interarm_in]),marker='o',c='g',linestyle='None')
+plt.ylabel(r'$log_{10}(\tau _\mathrm{H2}^{-1})\ (\mathrm{yrs}^{-1})$')
+plt.xlabel(r'$log_{10}(SFE)$')
+plt.tight_layout() 	
+plt.savefig('SFE_matplotlib.png')
+
 tb2 = {'Clouds': ['All','Nuclear','Arm','Interarm'] 
 	,'mean_T_dep': [
-		'{:3.2f}'.format(np.nanmean(Tdep)/1E9),
-		'{:3.2f}'.format(np.nanmean(Tdep[centre_in])/1E9),
-		'{:3.2f}'.format(np.nanmean(Tdep[arm_in])/1E9),
-		'{:3.2f}'.format(np.nanmean(Tdep[interarm_in])/1E9)]
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep))),
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep[centre_in]))),
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep[arm_in]))),
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep[interarm_in])))]
 	,'stde_T_dep': [
-		'{:3.2f}'.format(np.nanstd(Tdep,ddof=1)/np.sqrt(len(Tdep))/1E9),
-		'{:3.2f}'.format(np.nanstd(Tdep[centre_in],ddof=1)/np.sqrt(len(Tdep[centre_in]))/1E9),
-		'{:3.2f}'.format(np.nanstd(Tdep[arm_in],ddof=1)/np.sqrt(len(Tdep[arm_in]))/1E9),
-		'{:3.2f}'.format(np.nanstd(Tdep[interarm_in],ddof=1)/np.sqrt(len(Tdep[interarm_in]))/1E9)]
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep),ddof=1)/np.sqrt(len(Tdep))),
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep[centre_in]),ddof=1)/np.sqrt(len(Tdep[centre_in]))),
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep[arm_in]),ddof=1)/np.sqrt(len(Tdep[arm_in]))),
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep[interarm_in]),ddof=1)/np.sqrt(len(Tdep[interarm_in])))]
 	,'mean_T_dep2': [
-		'{:3.2f}'.format(np.nanmean(Tdep2)/1E9),
-		'{:3.2f}'.format(np.nanmean(Tdep2[centre_in])/1E9),
-		'{:3.2f}'.format(np.nanmean(Tdep2[arm_in])/1E9),
-		'{:3.2f}'.format(np.nanmean(Tdep2[interarm_in])/1E9)]
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep2))),
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep2[centre_in]))),
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep2[arm_in]))),
+		'{:3.2f}'.format(np.nanmean(np.log10(Tdep2[interarm_in])))]
 	,'stde_T_dep2': [
-		'{:3.2f}'.format(np.nanstd(Tdep2,ddof=1)/np.sqrt(len(Tdep2))/1E9),
-		'{:3.2f}'.format(np.nanstd(Tdep2[centre_in],ddof=1)/np.sqrt(len(Tdep2[centre_in]))/1E9),
-		'{:3.2f}'.format(np.nanstd(Tdep2[arm_in],ddof=1)/np.sqrt(len(Tdep2[arm_in]))/1E9),
-		'{:3.2f}'.format(np.nanstd(Tdep2[interarm_in],ddof=1)/np.sqrt(len(Tdep2[interarm_in]))/1E9)]
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep2),ddof=1)/np.sqrt(len(Tdep2))),
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep2[centre_in]),ddof=1)/np.sqrt(len(Tdep2[centre_in]))),
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep2[arm_in]),ddof=1)/np.sqrt(len(Tdep2[arm_in]))),
+		'{:3.2f}'.format(np.nanstd(np.log10(Tdep2[interarm_in]),ddof=1)/np.sqrt(len(Tdep2[interarm_in])))]
 	}
-
-
-
 
 
 t2 = Table(tb2,names =('Clouds','mean_T_dep','stde_T_dep','mean_T_dep2','stde_T_dep2'))
 print t2
 
 t2.write('means_T.tex', format = 'latex')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

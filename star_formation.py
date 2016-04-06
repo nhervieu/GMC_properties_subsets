@@ -115,7 +115,7 @@ volume = 4*np.pi/3*(mytable['RADRMS_EXTRAP_DECONV'].data*u.pc)**3
 rho = mytable['MASS_EXTRAP'].data*u.Msun/volume
 tff = ((3*np.pi/(32*con.G*rho))**0.5).to(u.Myr)
 virial_parameter = mytable['VIRMASS_EXTRAP_DECONV']/mytable['MASS_EXTRAP']
-SFE = 0.014*(mach/100)**(-0.32)/tff*(virial_parameter)**(-0.68)
+SFE = 0.014*(mach/100)**(-0.32)/tff*(virial_parameter/1.3)**(-0.68)
 plt.clf()
 figure = plt.figure(figsize=(4.5,4))
 ax = figure.add_subplot(111)

@@ -33,6 +33,7 @@ M_den = mytable['MASS_EXTRAP']/(np.pi*np.power(mytable['RADRMS_EXTRAP_DECONV'],2
 #Star formation varialbes
 Tdep = mytable['Tdep'].data
 SFRSD = mytable['SFRSD'].data
+H2SD = Tdep*SFRSD/1e6
 mygalaxy = Galaxy("M100")
 cpropstable = Table.read('m100.co10.kkms_props_cprops_withSFR_subsets.fits')
 rgal=mygalaxy.radius(ra = cpropstable['XPOS'], dec = cpropstable['YPOS'])
@@ -104,6 +105,31 @@ plt.ylabel(r'$log_{10}(\tau _\mathrm{H2}^{-1})\ (\mathrm{yrs}^{-1})$')
 plt.xlabel(r'$log_{10}(SFE)$')
 plt.tight_layout() 	
 plt.savefig('SFE_matplotlib.png')
+
+# Krumholz/McKee SFE plot
+
+import astropy.constants as con
+# The typical sound speed in molecular gas is 0.2 km/s
+mach = mytable['VRMS'].data/0.2
+volume = 4*np.pi/3*(mytable['RADRMS_EXTRAP_DECONV'].data*u.pc)**3
+rho = mytable['MASS_EXTRAP'].data*u.Msun/volume
+tff = ((3*np.pi/(32*con.G*rho))**0.5).to(u.Myr)
+virial_parameter = mytable['VIRMASS_EXTRAP_DECONV']/mytable['MASS_EXTRAP']
+SFE = 0.014*(mach/100)**(-0.32)/tff*(virial_parameter/1.3)**(-0.68)
+plt.clf()
+figure = plt.figure(figsize=(4.5,4))
+ax = figure.add_subplot(111)
+plt.loglog(1e6/Tdep[centre_in],SFE[centre_in],marker='v',c='b',linestyle='None')
+plt.plot(1e6/Tdep[arm_in],SFE[arm_in],marker='d',c='m',linestyle='None')
+plt.plot(1e6/Tdep[interarm_in],SFE[interarm_in],marker='o',c='g',linestyle='None')
+plt.xlabel(r'$\tau_{\mathrm{H2}}\ (\mathrm{Myr}^{-1})$')
+plt.ylabel(r'$\tau_{\mathrm{KM}}\ (\mathrm{Myr}^{-1})$')
+plt.xlim([1e-5,1e-2])
+plt.ylim([1e-4,1e-1])
+plt.plot([1e-5,1e-1],[1e-5,1e-1],lw=3,alpha=0.5)
+ax.set_aspect('equal')
+plt.tight_layout()
+plt.savefig('SFE_vs_KM.png')
 
 tb2 = {'Clouds': ['All','Nuclear','Arm','Interarm'] 
 	,'mean_T_dep': [
